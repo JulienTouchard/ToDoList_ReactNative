@@ -12,19 +12,34 @@ class TodoList extends Component {
     title = "Ma TodoList";
     insertList() {
         console.log("input : " + this.state.inputTxt)
-
-        let listTmp = this.state.list;
-        listTmp.push({ key: this.state.inputTxt });
-        this.setState({ list: listTmp });
+        console.dir(this.state.list)
+        /* if (!this.state.list.includes({key:this.state.inputTxt})) {
+            let listTmp = this.state.list;
+            listTmp.push({ key: this.state.inputTxt });
+            this.setState({ list: listTmp });
+        } */
+        console.log("length" + this.state.list.length)
+        if (this.state.list.length === 0) {
+            let listTmp = this.state.list;
+            listTmp.push({ key: this.state.inputTxt });
+            this.setState({ list: listTmp });
+        } else {
+            this.state.list.map((value) => {
+                if (this.state.inputTxt !== value.key) {
+                    let listTmp = this.state.list;
+                    listTmp.push({ key: this.state.inputTxt });
+                    this.setState({ list: listTmp });
+                }
+            })
+        }
 
         this.setState({ inputTxt: "" });
-
         console.dir(this.state.list)
     }
-    deleteItem(index){
+    deleteItem(index) {
         console.log(index)
         let listTmp = this.state.list;
-        listTmp.splice(index,1);
+        listTmp.splice(index, 1);
         this.setState({ list: listTmp });
     }
     render() {
@@ -41,11 +56,11 @@ class TodoList extends Component {
                 <ScrollView>
                     <FlatList
                         data={this.state.list}
-                        renderItem={({ item,index }) => <Text>
+                        renderItem={({ item, index }) => <Text>
                             {item.key}
                             <Button
                                 title="X"
-                                onPress={()=>{this.deleteItem(index)}}
+                                onPress={() => { this.deleteItem(index) }}
                             ></Button>
                         </Text>}
                     />
